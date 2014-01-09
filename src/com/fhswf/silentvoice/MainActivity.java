@@ -10,7 +10,7 @@ import com.fhswf.silentvoice.data.DataStorage;
 import com.fhswf.silentvoice.utility.Utilities;
 
 public class MainActivity extends Activity {
-
+	// Commit test
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
