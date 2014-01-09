@@ -10,13 +10,14 @@ import com.fhswf.silentvoice.data.DataStorage;
 import com.fhswf.silentvoice.utility.Utilities;
 
 public class MainActivity extends Activity {
+	private DataStorage data;
 	// Commit test
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);		
 		try {
-			DataStorage.getInstance();
+			data = DataStorage.getInstance();
 			Log.d("INFO", "Data successfull loaded");
 		} catch (Exception e) {
 			Log.e("ERROR", "Couldn't load data. \"Exception handling fehlt\"");
@@ -34,7 +35,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		super.onDestroy();
+		super.onDestroy();		
 	}
 	
 	public void onSpeakClicked(View view) 

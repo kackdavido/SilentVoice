@@ -29,12 +29,31 @@ public class DataStorage {
 		speakList = initSpeakList();
 	}	
 
-	public static DataStorage getInstance() throws Exception {
+	public synchronized static DataStorage getInstance() throws Exception {
 		if (instance == null)
 			instance = new DataStorage();
 
 		return instance;
-	}	
+	}
+	
+	public boolean isDirectoryAvailable(final File destDir) {
+		File f = destDir;
+		Log.d("INFO", "isDirectoryAvailable");
+		if(f.exists()) {
+			Log.d("INFO", "Directory already exsist.");
+			return true;
+		} 
+		return false;
+	}
+	
+	public boolean isDirCreated(final File destDir) {		
+		Log.d("FILE PATH", destDir.getAbsolutePath());		
+		if(destDir.mkdirs()) {
+			return true;
+		}
+		
+		return false;
+	}
 		
 	public void writeData(String fileName, ITransferObject list) throws Exception
 	{
@@ -43,17 +62,9 @@ public class DataStorage {
 //		DataEntry entry = new DataEntry("name","message");
 //		File source = getXmlFile("data.xml");
 //		serializer.write(entry, source);
-		
+		Log.d("INFO", "writeData");
 		try {				
-				File f = new File(Environment.getExternalStorageDirectory(), filePath);
-				//File f = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), fileName);
-				Log.d("FILE PATH", f.getAbsolutePath());
-				if(f.exists()) {
-					Log.d("INFO", "Directory already exsist.");
-				} else {
-					f.mkdirs();
-					Log.d("INFO", "Directory created.");
-				}
+				File f = new File(Environment.getExternalStorageDirectory(), filePath);			
 				
 				if(f.canWrite()) {
 					Log.d("WRITE PATH", "Path to write " + f.getAbsolutePath());
@@ -73,40 +84,42 @@ public class DataStorage {
 		}
 		
 		
-	}
-
-	// Wird glaub ich gar nicht benötigt!!!!!!!!!!!!!!!
-	private File getXmlFile(final String name) {
-		File sourceDir = MyAppContext.getAppContext().getFilesDir();
-		sourceDir.mkdir();	
-		Log.d("INFO", sourceDir.getAbsolutePath());
-		
-		File source = new File(sourceDir, "speak.xml");
-		//File source = new File(name);
-		
-		if(!source.canWrite())
-			Toast.makeText(MyAppContext.getAppContext(), "can not Write", Toast.LENGTH_SHORT).show();
-		
-		
-		if(source.mkdirs() || source.isDirectory())
-			Toast.makeText(MyAppContext.getAppContext(), MyAppContext.getAppContext().getFilesDir().toString(), Toast.LENGTH_SHORT).show();
-		else if(source == null)
-			Toast.makeText(MyAppContext.getAppContext(), "arschlecken", Toast.LENGTH_SHORT).show();
-
-			
-		return source;
-	}
+	}	
 	
 	// Hier exception handling
 	private SpeakList initSpeakList() throws Exception {
+		SpeakList data = new SpeakList();
 		serializer = new Persister();
 		File fileDir = new File(Environment.getExternalStorageDirectory(), filePath);
-		File source = new File(fileDir, "speak.xml");
 		
-		SpeakList data = serializer.read(SpeakList.class, source);
+		if(!isDirectoryAvailable(fileDir)) {
+			if(!isDirCreated(fileDir)) {
+				Log.e("ERROR", "Couldn´t create directory: \"" + fileDir.getAbsolutePath() + "\".");
+				// PROGRAMM ABBRUCH + FEHLERMELDUNG
+			}
+		}		
+		
+		File source = new File(fileDir.getAbsolutePath(), "speak.xml");	
+		
+		if(!fileDir.canWrite()) {
+			Log.e("ERROR", "File: " + fileDir.getAbsolutePath() + "speak.xml not writeable");
+		} 		
+		
+		try {		
+			if(!source.canWrite()) {
+				Log.e("ERROR", "File: " + fileDir.getAbsolutePath() + "/speak.xml not writeable");
+				serializer.write(speakList, source);		
+				Log.d("INFO", "Empty data file \"" + fileDir + "/speak.xml" + "\" successfull loaded");
+			} else {
+				data = serializer.read(SpeakList.class, source);
+			}
+		}
+		catch(IOException e) {
+			Log.e("ERROR", "Ich habs gewusst " + e.getMessage());
+		}
 		
 		if( data != null ) {
-			Log.d("INFO", "Data from File \"" + fileDir + "speak.xml" + "\" successfull loaded");
+			Log.d("INFO", "Data from File \"" + fileDir + "/speak.xml" + "\" successfull loaded");
 		} else {
 			Log.e("ERROR", "Can´t load data fromFile \"" + fileDir + "speak.xml" + "\"");
 		}
@@ -116,6 +129,7 @@ public class DataStorage {
 	
 	public void addSpeakEntry(SpeakEntry entry) throws Exception
 	{		
+		Log.d("INFO", "addSpeakEntry");
 		speakList.getList().add(entry);
 		writeData("speak.xml", speakList);
 	}
