@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="buttonText">
+        <item >Hallo</item>
+        <item >Ja</item>
+        <item >Nein</item>
+        <item >Tschüss</item>
+        <item >Warum?</item>
+        <item >Hilfe bitte</item>
+        <item>Pole bekommt immer Karten für Dortmundspiele</item>
+  	</array>
+</resources>

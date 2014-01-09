@@ -1,0 +1,93 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:paddingLeft = "16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical">
+     
+     <Button
+	        android:id="@+id/buttonSpeak"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:height="80dp"
+	        android:onClick="onSpeakClicked"
+	        android:text="@string/speak" />
+      <Button
+	        android:id="@+id/buttonHear"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:height="80dp"
+	        android:onClick="onHearClicked"
+	        android:text="@string/hear" />
+       <Button
+	        android:id="@+id/buttonOption"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:height="80dp"
+	        android:onClick="onOptionClicked"
+	        android:text="@string/option" />
+    
+</LinearLayout>
+
+
+
+<!--
+<GridView xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:id="@+id/gridview"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:columnWidth="90dp"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="10dp"
+    android:horizontalSpacing="10dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center"
+    android:paddingTop="10dp"
+/>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="fill_horizontal" >
+            
+            <Button
+	        android:id="@+id/buttonHallo"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:height="80dp"
+	        
+	        android:onClick="onSayClicked"
+	        android:text="@string/hallo" />
+	
+	    <Button
+	        android:id="@+id/buttonJa"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:height="80dp"
+	        android:onClick="onSayClicked"
+	        android:text="@string/ja" />
+
+	    <Button
+	        android:id="@+id/buttonNein"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:height="80dp"
+	        android:onClick="onSayClicked"
+	        android:text="@string/nein" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+    </TableLayout>
+-->

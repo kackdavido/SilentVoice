@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SilentVoice</string>
+    <string name="menu_settings">Settings</string>
+    <string name="record">Aufnahme</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">Silent Voice</string>
+    <string name="speak_section_add">Hinzufügen</string>
+    <string name="speak_section_read">Vorlesen</string>
+    <string name="speak_section_speak">Sprechen</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_speak">SpeakActivity</string>
+    <string name="speak">Sprechen</string>
+    <string name="hear">Hören</string>
+    <string name="option">Optionen</string>
+    <string name="title_activity_hear">Hören</string>
+    <string name="hear_section1">Hören</string>
+    <string name="hear_section2">Zuletzt gehört</string>
+    <string name="read">Vorlesen</string>
+    <string name="speak_section_add_name">Bezeichnung</string>
+    <string name="speak_section_add_message">Nachricht</string>
+    <string name="speak_section_add_symbol">Symbol</string>
+
+</resources>
