@@ -16,7 +16,7 @@ import com.fhswf.silentvoice.utility.MyAppContext;
 
 @Root
 public class DataStorage {
-
+	// Funktioniert nicht
 	private static DataStorage instance = null;
 	private Serializer serializer;
 	private String filePath = "Android/data/com.fhswf.silentvoice";
