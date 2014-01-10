@@ -10,16 +10,13 @@ import org.simpleframework.xml.core.Persister;
 
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.fhswf.silentvoice.utility.MyAppContext;
 
 @Root
 public class DataStorage {
 	// Funktioniert nicht
 	private static DataStorage instance = null;
 	private Serializer serializer;
-	private String filePath = "Android/data/com.fhswf.silentvoice";
+	private String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.fhswf.silentvoice";
 
 	@ElementList
 	private SpeakList speakList;
@@ -48,30 +45,28 @@ public class DataStorage {
 	
 	public boolean isDirCreated(final File destDir) {		
 		Log.d("FILE PATH", destDir.getAbsolutePath());		
-		if(destDir.mkdirs()) {
-			return true;
-		}
+		
+		try {
+			if(destDir.getParentFile().mkdirs()) {				
+				return true;
+			}
+		} catch (Exception e) {
+			Log.e("ERROR", "Exception in isDirCreated");
+			e.printStackTrace();
+		}		
 		
 		return false;
 	}
 		
 	public void writeData(String fileName, ITransferObject list) throws Exception
 	{
-//		serializer = new Persister();
-////		list.add(new DataEntry("name","message"));
-//		DataEntry entry = new DataEntry("name","message");
-//		File source = getXmlFile("data.xml");
-//		serializer.write(entry, source);
 		Log.d("INFO", "writeData");
 		try {				
-				File f = new File(Environment.getExternalStorageDirectory(), filePath);			
+				File f = new File(filePath);			
 				
 				if(f.canWrite()) {
 					Log.d("WRITE PATH", "Path to write " + f.getAbsolutePath());
 					File writeFile = new File(f.getAbsoluteFile(), fileName);
-					
-					//File writeFile = getXmlFile(f.getAbsolutePath()+"/speak.xml");
-//					speakList.addSpeakEntry(entry)
 					
 					serializer = new Persister();					
 					serializer.write(list, writeFile);					
@@ -90,39 +85,25 @@ public class DataStorage {
 	private SpeakList initSpeakList() throws Exception {
 		SpeakList data = new SpeakList();
 		serializer = new Persister();
-		File fileDir = new File(Environment.getExternalStorageDirectory(), filePath);
+		File source = new File(filePath, "speak.xml");	
 		
-		if(!isDirectoryAvailable(fileDir)) {
-			if(!isDirCreated(fileDir)) {
-				Log.e("ERROR", "Couldn´t create directory: \"" + fileDir.getAbsolutePath() + "\".");
+		if(!isDirectoryAvailable(source)) {
+			if(!isDirCreated(source)) {
+				Log.e("ERROR", "Couldn´t create directory: \"" + source.getAbsolutePath() + "\".");
 				// PROGRAMM ABBRUCH + FEHLERMELDUNG
 			}
-		}		
-		
-		File source = new File(fileDir.getAbsolutePath(), "speak.xml");	
-		
-		if(!fileDir.canWrite()) {
-			Log.e("ERROR", "File: " + fileDir.getAbsolutePath() + "speak.xml not writeable");
-		} 		
+		}			
 		
 		try {		
-			if(!source.canWrite()) {
-				Log.e("ERROR", "File: " + fileDir.getAbsolutePath() + "/speak.xml not writeable");
-				serializer.write(speakList, source);		
-				Log.d("INFO", "Empty data file \"" + fileDir + "/speak.xml" + "\" successfull loaded");
+			if(!source.canRead()) {
+				Log.d("INFO", "File: " + source.getAbsolutePath() + " not readable. First startup!");				
 			} else {
 				data = serializer.read(SpeakList.class, source);
 			}
 		}
 		catch(IOException e) {
 			Log.e("ERROR", "Ich habs gewusst " + e.getMessage());
-		}
-		
-		if( data != null ) {
-			Log.d("INFO", "Data from File \"" + fileDir + "/speak.xml" + "\" successfull loaded");
-		} else {
-			Log.e("ERROR", "Can´t load data fromFile \"" + fileDir + "speak.xml" + "\"");
-		}
+		}		
 		
 		return data;
 	}

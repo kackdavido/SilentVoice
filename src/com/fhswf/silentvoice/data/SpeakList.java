@@ -11,6 +11,10 @@ public class SpeakList implements ITransferObject {
 	@ElementList
 	private ArrayList<SpeakEntry> list;
 	
+	public SpeakList() {
+		list = new ArrayList<SpeakEntry>();
+	}
+	
 	public ArrayList<SpeakEntry> getList()
 	{
 		return list;
