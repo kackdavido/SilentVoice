@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.fhswf.silentvoice.components.MyButton;
+import com.fhswf.silentvoice.components.MyImageView;
 
 public class MyOnClickListener implements OnClickListener, OnInitListener
 { 
@@ -25,7 +26,8 @@ public class MyOnClickListener implements OnClickListener, OnInitListener
 	@Override
 	public void onClick(View v) 
 	{
-		MyButton button = (MyButton) v;
+		MyImageView button = (MyImageView) v;		
+//		MyButton button = (MyButton) v;
 		Toast.makeText(mContext, "Clicked on id: " + button.getText(), Toast.LENGTH_SHORT).show();
 		Log.d("Debug", "Clicked " + button.getMessage());
 		tts.speak(button.getMessage(), TextToSpeech.QUEUE_ADD, null);

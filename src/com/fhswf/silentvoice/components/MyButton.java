@@ -17,9 +17,9 @@ public class MyButton extends Button{
 	private Button button;
 	
 	public MyButton(Context context) {
-		super(context);
-		
+		super(context);		
 		button = new Button(context);
+		
 		message = "";
 		setOnClickListener(new MyOnClickListener(context));
 	}
