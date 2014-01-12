@@ -1,6 +1,7 @@
 package com.fhswf.silentvoice.fragments;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fhswf.silentvoice.R;
+import com.fhswf.silentvoice.data.DataStorage;
+import com.fhswf.silentvoice.data.HearEntry;
 
 public class HearMainFragment extends Fragment {
 
@@ -81,8 +84,12 @@ public class HearMainFragment extends Fragment {
 				{
 	                ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 	                
+	                // Add recognized data to textfield
 	                Log.d("INFO", "Recognizer Datalength: " + text.size() + " Data: " + text.get(0));
 	                hearText.setText(text.get(0));
+	                
+	                //Add recognized data to xml file for history
+	                DataStorage.getInstance().addHearEntry(new HearEntry(new GregorianCalendar(2014,01,12), text.get(0)));
 				}
 				else
 				{

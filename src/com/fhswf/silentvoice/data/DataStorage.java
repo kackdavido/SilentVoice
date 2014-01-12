@@ -20,13 +20,19 @@ public class DataStorage {
 
 	@ElementList
 	private SpeakList speakList;
+	
+	@ElementList
+	private HearList hearList;
 
-	private DataStorage() throws Exception {
+	private DataStorage()  {
 		speakList = new SpeakList();
 		speakList = initSpeakList();
+		
+		hearList = new HearList();
+		hearList = initHearList();
 	}	
 
-	public synchronized static DataStorage getInstance() throws Exception {
+	public synchronized static DataStorage getInstance() {
 		if (instance == null)
 			instance = new DataStorage();
 
@@ -58,7 +64,7 @@ public class DataStorage {
 		return false;
 	}
 		
-	public void writeData(String fileName, ITransferObject list) throws Exception
+	public void writeData(String fileName, ITransferObject list)
 	{
 		Log.d("INFO", "writeData");
 		try {				
@@ -74,7 +80,7 @@ public class DataStorage {
 				} else {
 					Log.e("WRITE ERROR", "Could not write file to " + f.getAbsolutePath());
 				}
-		} catch(IOException e) {
+		} catch(Exception e) {
 			Log.e("WRITE ERROR", "Could not write file " + e.getMessage());
 		}
 		
@@ -82,7 +88,7 @@ public class DataStorage {
 	}	
 	
 	// Hier exception handling
-	private SpeakList initSpeakList() throws Exception {
+	private SpeakList initSpeakList()  {
 		SpeakList data = new SpeakList();
 		serializer = new Persister();
 		File source = new File(filePath, "speak.xml");	
@@ -90,7 +96,6 @@ public class DataStorage {
 		if(!isDirectoryAvailable(source)) {
 			if(!isDirCreated(source)) {
 				Log.e("ERROR", "Couldn´t create directory: \"" + source.getAbsolutePath() + "\".");
-				// PROGRAMM ABBRUCH + FEHLERMELDUNG
 			}
 		}			
 		
@@ -101,14 +106,14 @@ public class DataStorage {
 				data = serializer.read(SpeakList.class, source);
 			}
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			Log.e("ERROR", "Ich habs gewusst " + e.getMessage());
 		}		
 		
 		return data;
 	}
 	
-	public void addSpeakEntry(SpeakEntry entry) throws Exception
+	public void addSpeakEntry(SpeakEntry entry)
 	{		
 		Log.d("INFO", "addSpeakEntry");
 		speakList.getList().add(entry);
@@ -117,5 +122,41 @@ public class DataStorage {
 	
 	public SpeakList getSpeakList() {
 		return speakList;
+	}
+	
+	private HearList initHearList()  {
+		HearList data = new HearList();
+		serializer = new Persister();
+		File source = new File(filePath, "hear.xml");	
+		
+		if(!isDirectoryAvailable(source)) {
+			if(!isDirCreated(source)) {
+				Log.e("ERROR", "Couldn´t create directory: \"" + source.getAbsolutePath() + "\".");
+			}
+		}			
+		
+		try {		
+			if(!source.canRead()) {
+				Log.d("INFO", "File: " + source.getAbsolutePath() + " not readable. First startup!");				
+			} else {
+				data = serializer.read(HearList.class, source);
+			}
+		}
+		catch(Exception e) {
+			Log.e("ERROR", "Ich habs gewusst " + e.getMessage());
+		}		
+		
+		return data;
+	}
+	
+	public void addHearEntry(HearEntry entry) 
+	{		
+		Log.d("INFO", "addHearEntry");
+		hearList.getList().add(entry);
+		writeData("hear.xml", hearList);
+	}
+	
+	public HearList getHearList() {
+		return hearList;
 	}
 }
