@@ -23,6 +23,8 @@ public class DataStorage {
 	
 	@ElementList
 	private HearList hearList;
+	
+	private final int HEAR_MAX = 20;
 
 	private DataStorage()  {
 		speakList = new SpeakList();
@@ -152,7 +154,12 @@ public class DataStorage {
 	public void addHearEntry(HearEntry entry) 
 	{		
 		Log.d("INFO", "addHearEntry");
+		
+		if(hearList.getList().size() >= HEAR_MAX)
+			hearList.getList().remove(HEAR_MAX - 1);
+
 		hearList.getList().add(entry);
+		
 		writeData("hear.xml", hearList);
 	}
 	
